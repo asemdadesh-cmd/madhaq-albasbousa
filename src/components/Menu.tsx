@@ -5,7 +5,7 @@ import type { CategoryId } from '../lib/types';
 import { Icon } from './Icon';
 import { ProductCard } from './ProductCard';
 
-export const Menu = forwardRef<HTMLInputElement, { onOpen: (id: string) => void }>(function Menu({ onOpen }, searchRef) {
+export const Menu = forwardRef<HTMLInputElement, { onOpen: (id: string, from?: HTMLElement | null) => void }>(function Menu({ onOpen }, searchRef) {
   const [cat, setCat] = useState<CategoryId | 'all'>('all');
   const [query, setQuery] = useState('');
   const tabs: { id: CategoryId | 'all'; nameAr: string }[] = [{ id: 'all', nameAr: 'كل الحلو' }, ...CATEGORIES];

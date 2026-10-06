@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { PRODUCTS } from '../config/menu';
-import { defaultVariant, startingPrice, suggestTrays, unitLabel, wholeUnitLabel } from './catalog';
+import { defaultVariant, servesUpTo, startingPrice, suggestTrays, unitLabel, wholeUnitLabel } from './catalog';
 import { cartCount, cartLines, cartReducer, cartTotal, MAX_QTY, sanitizeCart } from './cart';
 
 describe('menu model', () => {
@@ -34,6 +34,15 @@ describe('menu model', () => {
     const b = PRODUCTS.find((p) => p.id === 'basbousa-qishta')!;
     expect(startingPrice(b)).toBe(30);
     expect(defaultVariant(b).id).toBe('medium');
+  });
+});
+
+describe('"see it on the table"', () => {
+  it('reads the head-count for each size and gives every size a mood line', () => {
+    const b = PRODUCTS.find((p) => p.id === 'basbousa-qishta')!;
+    expect(b.variants.map(servesUpTo)).toEqual([6, 10, 16]);
+    expect(servesUpTo({ id: 'x', nameAr: 'x', price: 1, serves: 'يكفي ٢٥–٣٠ شخص' })).toBe(30);
+    for (const p of PRODUCTS) for (const v of p.variants) expect(v.mood).toBeTruthy();
   });
 });
 

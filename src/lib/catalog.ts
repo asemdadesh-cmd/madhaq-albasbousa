@@ -71,3 +71,11 @@ export function searchProducts(products: Product[], query: string): Product[] {
     searchKey(`${p.nameAr} ${p.nameEn} ${p.notes ?? ''} ${p.description} ${unitLabel(p)}`).includes(q),
   );
 }
+
+/** Upper head-count of a size, read from its serves text ("يكفي تقريباً 7–10 أشخاص" → 10). */
+export function servesUpTo(variant: Variant): number {
+  const nums = (normalizeArabicDigits(variant.serves).match(/\d+/g) ?? []).map(Number);
+  return nums.length ? Math.max(...nums) : 0;
+}
+
+const normalizeArabicDigits = (s: string) => s.replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660));

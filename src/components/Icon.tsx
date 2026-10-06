@@ -23,7 +23,7 @@ const PATHS = {
 
 export type IconName = keyof typeof PATHS | 'whatsapp' | 'sparkle';
 
-export function Icon({ name, size = 20, stroke = 1.6 }: { name: IconName; size?: number; stroke?: number }) {
+export function Icon({ name, size = 20, stroke = 1.6, draw }: { name: IconName; size?: number; stroke?: number; draw?: boolean }) {
   if (name === 'sparkle') {
     return (
       <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -53,8 +53,9 @@ export function Icon({ name, size = 20, stroke = 1.6 }: { name: IconName; size?:
       strokeLinejoin="round"
       aria-hidden="true"
       focusable="false"
+      className={draw ? 'draw' : undefined}
     >
-      <path d={PATHS[name]} />
+      <path d={PATHS[name]} pathLength={draw ? 1 : undefined} />
     </svg>
   );
 }

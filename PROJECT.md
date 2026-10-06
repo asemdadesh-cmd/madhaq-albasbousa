@@ -17,6 +17,20 @@ menu (tabs + Arabic-aware search + 2-col phone / 3-col desktop cards) → occasi
 "كم شخص عندك؟" planner → 4 steps → sign-off + footer. Stock photos get one shared CDN colour grade
 (`src/lib/images.ts`) so they read as a set.
 
+## Motion & the choosing moment
+- **Scroll:** hero load choreography (copy rises, photo unveils, seal stamps in), fade-up reveals, section
+  titles rising out of a mask, value icons drawing themselves, a ribbon of product names that drifts with
+  scroll, parallax on the hero/occasions photos, card photos settling as they enter, header firming up on
+  scroll. Scroll-linked parts use CSS scroll timelines (Chrome/Edge/Android; other browsers simply skip them).
+  Everything is off for "reduce motion".
+- **Choosing (`src/components/TrayPreview.tsx`):** "شوف حجمه على الطاولة": a top-down table with the tray /
+  box / cake at the chosen size and one place setting per person it serves. Bigger sizes reveal more cut
+  pieces, plates slide in around the table, quantity adds plates and a ×N badge. Each size has a mood line
+  (`SIZE_MOODS` / `mood` in `menu.ts`) and each product a tray colour (`tint`).
+- **Delight:** the card photo morphs into the product sheet (View Transitions), the price rolls, Android phones
+  get a light haptic tick, the photo flies into the basket (`src/lib/motion.ts`), and sending the order ends
+  with a stamped seal, a small confetti burst and "صحتين مقدماً!".
+
 ## Architecture
 Vite 8 + React 19 + TypeScript, plain CSS tokens, self-hosted Amiri + IBM Plex Sans Arabic, build-time pre-render
 (`src/entry-server.tsx` + `scripts/prerender.mjs`) and schema.org menu JSON-LD. Cart + contact details in
@@ -40,6 +54,9 @@ the biggest remaining upgrade. This environment's network blocks downloading gen
 canva.com) until those hosts are allowed.
 
 ## Changelog
+- **2026-10-06** — Motion + choosing experience: "see it on the table" tray drawing with plates per person,
+  size moods, rolling price, card-to-sheet photo morph, fly-to-basket, haptics, sealed "صحتين مقدماً!"
+  finale, scroll choreography (reveals, ribbon, parallax). Tests 18/18, e2e clean.
 - **2026-10-06** — Premium redesign: new design system (green/ivory/brass, Amiri + Plex), editorial hero
   with seal stamp and featured card, value props, menu search, tasting notes, refined cards/sheets/cart bar,
   feminine unit labels (صينية كاملة), odd last card spans the row on phones. Fixed a phone layout bug where

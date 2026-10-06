@@ -7,6 +7,7 @@ _Last updated: 2026-10-06_
 - [x] Curated full-tray photography (Unsplash, credited)
 
 - [x] Premium redesign (design system, hero stamp + featured card, search, tasting notes)
+- [x] Scroll animations + "see it on the table" choosing moment, fly-to-basket, order-sent finale
 
 ## ⬜ Planned
 - [ ] Matched photo set (brass trays on linen, one light/angle): needs figma.com allowed in the environment network, or the shop's own photos

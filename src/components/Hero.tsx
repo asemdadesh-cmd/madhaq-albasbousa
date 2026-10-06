@@ -80,7 +80,7 @@ export function ValueProps() {
           {items.map((v) => (
             <li key={v.title} data-reveal>
               <span className="values-icon">
-                <Icon name={v.icon} size={30} stroke={1.3} />
+                <Icon name={v.icon} size={30} stroke={1.3} draw />
               </span>
               <span>
                 <strong>{v.title}</strong>

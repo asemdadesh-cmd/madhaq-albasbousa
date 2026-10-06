@@ -4,7 +4,7 @@ import { store } from '../config/store';
 import { Icon } from './Icon';
 import { Img } from './Img';
 
-export function ProductCard({ product, onOpen }: { product: Product; onOpen: (id: string) => void }) {
+export function ProductCard({ product, onOpen }: { product: Product; onOpen: (id: string, from?: HTMLElement | null) => void }) {
   return (
     <article className="pcard" data-reveal>
       <div className="pcard-media">
@@ -28,7 +28,7 @@ export function ProductCard({ product, onOpen }: { product: Product; onOpen: (id
         <button
           type="button"
           className="pcard-btn stretched"
-          onClick={() => onOpen(product.id)}
+          onClick={(e) => onOpen(product.id, e.currentTarget.closest('.pcard')?.querySelector<HTMLElement>('.pcard-media > img'))}
           aria-label={`اختار حجم ${product.nameAr}`}
         >
           <span>اختار الحجم</span>

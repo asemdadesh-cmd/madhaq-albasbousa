@@ -30,17 +30,24 @@ export const SERVES: Record<SizeId, string> = {
   large: 'يكفي تقريباً 12–16 شخص',
 };
 
+/** Who each standard size is for — shown while the customer is choosing. */
+export const SIZE_MOODS: Record<SizeId, string> = {
+  small: 'لقعدة العيلة',
+  medium: 'لما يجوا الضيوف',
+  large: 'للعزومة واللمّة الكبيرة',
+};
+
 /** Rough head-count each size covers — used by the "كم شخص عندك؟" helper. */
 export const SERVES_UP_TO: Record<SizeId, number> = { small: 6, medium: 10, large: 16 };
 
-type SizeSpec = number | { price: number; serves?: string; dimensions?: string; image?: Photo };
+type SizeSpec = number | { price: number; serves?: string; dimensions?: string; image?: Photo; mood?: string };
 
 /** Builds the usual small / medium / large variants from prices (and optional per-size extras). */
 function sizes(spec: Record<SizeId, SizeSpec>): Variant[] {
   return (Object.keys(SIZE_NAMES) as SizeId[]).map((id) => {
     const s = spec[id];
     const extra = typeof s === 'number' ? { price: s } : s;
-    return { id, nameAr: SIZE_NAMES[id], serves: SERVES[id], ...extra };
+    return { id, nameAr: SIZE_NAMES[id], serves: SERVES[id], mood: SIZE_MOODS[id], ...extra };
   });
 }
 
@@ -74,6 +81,7 @@ export const CATEGORIES: Category[] = [
 export const PRODUCTS: Product[] = [
   {
     id: 'basbousa-qishta',
+    tint: '#d6a04e',
     nameAr: 'بسبوسة بالقشطة',
     nameEn: 'Basbousa with cream',
     description: 'بسبوسة طرية محضّرة يومياً بطبقة غنية من القشطة، مسقية بالقطر ومزيّنة بالمكسرات.',
@@ -86,6 +94,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'basbousa-nutella',
+    tint: '#5a301d',
     nameAr: 'بسبوسة نوتيلا',
     nameEn: 'Nutella basbousa',
     description: 'بسبوستنا الذهبية مغطاة بطبقة سخية من النوتيلا، مقطّعة وجاهزة للتقديم.',
@@ -97,6 +106,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'kunafa-qishta',
+    tint: '#cc8636',
     nameAr: 'كنافة بالقشطة',
     nameEn: 'Kunafa with cream',
     description: 'كنافة مقرمشة بالسمن، محشية قشطة ومسقية بالقطر — تتقدّم سخونة.',
@@ -109,6 +119,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'kunafa-nutella',
+    tint: '#7a4524',
     nameAr: 'كنافة نوتيلا',
     nameEn: 'Nutella kunafa',
     description: 'كنافة محمّصة محشية ومغطاة بالنوتيلا — المفضّلة عند الصغار والكبار.',
@@ -121,6 +132,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'baklava-mix',
+    tint: '#c99440',
     nameAr: 'بقلاوة مشكلة',
     nameEn: 'Assorted baklava',
     description: 'تشكيلة بقلاوة بالفستق والجوز والكاجو، مرصوصة في بوكس جاهز للضيافة أو الهدية.',
@@ -136,6 +148,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'baklava-tray',
+    tint: '#c48a37',
     nameAr: 'صينية بقلاوة بالفستق',
     nameEn: 'Pistachio baklava tray',
     description: 'صينية بقلاوة كاملة بالسمن والفستق الحلبي، مقطّعة وجاهزة للعزومة.',
@@ -148,6 +161,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'lotus-cheesecake',
+    tint: '#b5783e',
     nameAr: 'تشيز كيك لوتس',
     nameEn: 'Lotus cheesecake',
     description: 'قاعدة بسكويت لوتس، كريمة جبن ناعمة، وصوص لوتس على الوجه.',
@@ -163,6 +177,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'chocolate-cake',
+    tint: '#4a2617',
     nameAr: 'كيكة شوكولاتة',
     nameEn: 'Chocolate cake',
     description: 'كيكة شوكولاتة طرية بطبقات كريمة الشوكولاتة — تنفع لعيد ميلاد أو لمّة.',
@@ -178,6 +193,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: 'occasion-mix',
+    tint: '#cf9846',
     nameAr: 'صينية المناسبات المشكلة',
     nameEn: 'Mixed occasion tray',
     description: 'بسبوسة وكنافة وبقلاوة في صينية وحدة كبيرة — للعزائم والخطوبات والأعياد والجمعات الكبيرة.',
@@ -188,9 +204,9 @@ export const PRODUCTS: Product[] = [
     unitLabel: 'صينية',
     badge: 'للمناسبات',
     variants: [
-      { id: 'medium', nameAr: 'وسط', price: 120, serves: 'يكفي تقريباً 15–20 شخص' },
-      { id: 'large', nameAr: 'كبير', price: 180, serves: 'يكفي تقريباً 25–30 شخص' },
-      { id: 'family', nameAr: 'عائلي', price: 250, serves: 'يكفي تقريباً 35–45 شخص' },
+      { id: 'medium', nameAr: 'وسط', price: 120, serves: 'يكفي تقريباً 15–20 شخص', mood: 'لعزومة العيلة الكبيرة' },
+      { id: 'large', nameAr: 'كبير', price: 180, serves: 'يكفي تقريباً 25–30 شخص', mood: 'للخطوبات والأعياد' },
+      { id: 'family', nameAr: 'عائلي', price: 250, serves: 'يكفي تقريباً 35–45 شخص', mood: 'للمناسبات الكبيرة' },
     ],
   },
 ];

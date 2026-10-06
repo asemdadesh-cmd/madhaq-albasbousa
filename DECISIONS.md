@@ -2,6 +2,17 @@
 
 _Last updated: 2026-10-06_
 
+### 2026-10-06 — Make choosing a size the memorable moment, with zero animation libraries
+**Decision:** The signature interaction is "شوف حجمه على الطاولة", a live SVG table where the tray grows and
+place settings appear per person served, plus a card-to-sheet photo morph, fly-to-basket, light haptics and
+a sealed finale. Built with CSS, SVG, the Web Animations API, View Transitions and CSS scroll timelines; no
+motion library.
+**Why:** The shop sells whole trays, and the customer's real question is "is this enough for my people?". The
+table answers it visually and makes the moment memorable and specific to this business, not generic
+decoration. Native platform features keep the bundle small (no ~40 KB motion library) and degrade gracefully:
+browsers without View Transitions or scroll timelines just skip those touches; reduced-motion users get
+static, instant states.
+
 ### 2026-10-06 — Premium redesign: restraint, serif display, hairlines, one photo grade
 **Decision:** Rebuild the visual layer around green/ivory/brass with the logo's cocoa as accent, Amiri for
 display and IBM Plex Sans Arabic for UI, hairline-bordered cards instead of shadowed "template" cards, an

@@ -40,7 +40,7 @@ export function Header({ count, onCart, onSearch }: { count: number; onCart: () 
           <button type="button" className="icon-btn ghost bag-btn" onClick={onCart} aria-label={`السلة، ${count} صنف`}>
             <Icon name="bag" size={22} />
             {count > 0 && (
-              <span className="bag-count" aria-hidden="true">
+              <span className="bag-count" aria-hidden="true" key={count}>
                 {count}
               </span>
             )}
