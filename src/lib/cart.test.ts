@@ -25,6 +25,7 @@ describe('menu model', () => {
     const byId = (id: string) => PRODUCTS.find((p) => p.id === id)!;
     expect(wholeUnitLabel(byId('basbousa-qishta'))).toBe('طاجين كامل');
     expect(unitLabel(byId('kunafa-qishta'))).toBe('صينية');
+    expect(wholeUnitLabel(byId('kunafa-qishta'))).toBe('صينية كاملة');
     expect(unitLabel(byId('baklava-mix'))).toBe('بوكس');
     expect(unitLabel(byId('lotus-cheesecake'))).toBe('قالب');
   });

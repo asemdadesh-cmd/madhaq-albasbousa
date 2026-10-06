@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { defaultVariant, formatPrice, getVariant, variantImage, wholeUnitLabel, unitLabel } from '../lib/catalog';
 import { MAX_QTY } from '../lib/cart';
 import type { Product } from '../lib/types';
+import { store } from '../config/store';
 import { Icon } from './Icon';
 import { Img } from './Img';
 import { Sheet } from './Sheet';
@@ -39,12 +40,13 @@ function ProductDetail({ product, onAdd }: { product: Product; onAdd: Props['onA
         <Img photo={variantImage(product, variant)} ratio={16 / 10} widths={[500, 800, 1100]} sizes="(min-width: 760px) 640px, 100vw" priority />
       </div>
       <div className="product-info">
-        <p className="eyebrow">{wholeUnitLabel(product)}</p>
+        <p className="kicker">{wholeUnitLabel(product)}</p>
         <h2 className="product-title">{product.nameAr}</h2>
+        {product.notes && <p className="product-notes">{product.notes}</p>}
         <p className="product-desc">{product.description}</p>
 
         <fieldset className="sizes">
-          <legend>اختر الحجم</legend>
+          <legend>اختار الحجم</legend>
           {product.variants.map((v) => (
             <label key={v.id} className="size-option">
               <input
@@ -67,6 +69,10 @@ function ProductDetail({ product, onAdd }: { product: Product; onAdd: Props['onA
             </label>
           ))}
         </fieldset>
+
+        <p className="product-info-line">
+          <Icon name="truck" size={17} /> توصيل داخل {store.city} · {store.paymentNote}
+        </p>
 
         <div className="qty-row">
           <div>

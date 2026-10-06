@@ -4,33 +4,38 @@ import { suggestTrays } from '../lib/catalog';
 import { Icon } from './Icon';
 import { Img } from './Img';
 
-const OCCASIONS = ['العيلة', 'الضيوف', 'الجمعات', 'المناسبات', 'العزائم', 'الهدايا'];
+const OCCASIONS = ['العيلة', 'الضيوف', 'الجمعات', 'الخطوبات', 'العزائم', 'الهدايا'];
 
 export function Occasions({ onPick }: { onPick: (productId: string) => void }) {
   const [people, setPeople] = useState(12);
   const plan = suggestTrays(people);
-  const planText = plan.map((p) => `${p.count > 1 ? `${p.count}× ` : ''}طاجين ${SIZE_NAMES[p.size]}`).join(' + ');
+  const planText = plan.map((p) => `${p.count > 1 ? `${p.count} × ` : ''}طاجين ${SIZE_NAMES[p.size]}`).join(' + ');
 
   return (
     <section id="occasions" className="section occasions" aria-labelledby="occ-title">
       <div className="container occ-inner">
-        <div className="occ-media">
-          <Img photo={PHOTOS.occasionTrays} ratio={4 / 3} widths={[500, 800, 1100]} sizes="(min-width: 900px) 45vw, 100vw" />
+        <div className="occ-media" data-reveal>
+          <Img photo={PHOTOS.occasionTrays} ratio={4 / 5} widths={[500, 800, 1100]} sizes="(min-width: 900px) 42vw, 92vw" />
         </div>
-        <div className="occ-copy">
-          <p className="eyebrow">للمّات والمناسبات</p>
-          <h2 id="occ-title">عندك لمّة؟ إحنا علينا الحلو.</h2>
-          <p className="section-lead">من الفرن إلى لمّتكم — صواني كاملة مقطّعة وجاهزة للتقديم.</p>
-          <ul className="occ-tags" aria-label="مناسبات نجهّز لها">
-            {OCCASIONS.map((o) => (
-              <li key={o}>{o}</li>
-            ))}
-          </ul>
+        <div className="occ-copy" data-reveal>
+          <p className="kicker on-dark">
+            <Icon name="sparkle" size={12} /> للمّات والمناسبات
+          </p>
+          <h2 id="occ-title" className="display-2">
+            عندك لمّة؟
+            <br />
+            <em>إحنا علينا الحلو.</em>
+          </h2>
+          <p className="occ-lead">صواني كاملة، مقطّعة وجاهزة للتقديم — للعيلة، للضيوف، وللّيالي اللي تستاهل.</p>
+          <p className="occ-tags">{OCCASIONS.join('  ·  ')}</p>
 
           <div className="planner">
-            <label htmlFor="people" className="planner-label">
-              <Icon name="users" /> كم شخص عندك؟ <output htmlFor="people">{people}</output>
-            </label>
+            <div className="planner-top">
+              <label htmlFor="people">كم شخص عندك؟</label>
+              <output htmlFor="people" className="planner-count">
+                {people}
+              </output>
+            </div>
             <input
               id="people"
               type="range"
@@ -38,6 +43,7 @@ export function Occasions({ onPick }: { onPick: (productId: string) => void }) {
               max={60}
               step={1}
               value={people}
+              style={{ ['--p' as string]: `${((people - 2) / 58) * 100}%` }}
               onChange={(e) => setPeople(Number(e.target.value))}
               aria-valuetext={`${people} شخص`}
             />
@@ -45,11 +51,11 @@ export function Occasions({ onPick }: { onPick: (productId: string) => void }) {
               ننصحك بـ <strong>{planText}</strong>
             </p>
             <div className="planner-ctas">
-              <button type="button" className="btn btn-primary" onClick={() => onPick('basbousa-qishta')}>
-                اطلب طاجين بسبوسة
+              <button type="button" className="btn btn-light" onClick={() => onPick('basbousa-qishta')}>
+                اطلب طاجين بسبوسة <Icon name="arrow" size={18} />
               </button>
               {people >= 15 && (
-                <button type="button" className="btn btn-ghost" onClick={() => onPick('occasion-mix')}>
+                <button type="button" className="text-link on-dark" onClick={() => onPick('occasion-mix')}>
                   أو صينية المناسبات المشكلة
                 </button>
               )}

@@ -1,17 +1,21 @@
 import { formatPrice } from '../lib/catalog';
 import { Icon } from './Icon';
 
-/** Sticky "view order" bar on phones — always one tap from checkout once something is in the cart. */
+/** Sticky "your basket" bar — always one tap from checkout once something is in it. */
 export function CartBar({ count, total, onOpen }: { count: number; total: number; onOpen: () => void }) {
   if (!count) return null;
   return (
     <div className="cart-bar">
-      <button type="button" className="btn btn-primary btn-block btn-lg cart-bar-btn" onClick={onOpen}>
-        <span className="cart-bar-count">{count}</span>
-        <span className="cart-bar-label">
-          <Icon name="bag" /> عرض الطلب
+      <button type="button" className="cart-bar-btn" onClick={onOpen} aria-label={`سلّتك: ${count} صنف، ${formatPrice(total)} — عرض الطلب`}>
+        <span className="cart-bar-start">
+          <Icon name="bag" size={22} />
+          <span>سلّتك</span>
+          <span className="cart-bar-count">({count})</span>
         </span>
-        <strong>{formatPrice(total)}</strong>
+        <strong className="cart-bar-total">{formatPrice(total)}</strong>
+        <span className="cart-bar-go" aria-hidden="true">
+          <Icon name="arrow" size={20} />
+        </span>
       </button>
     </div>
   );

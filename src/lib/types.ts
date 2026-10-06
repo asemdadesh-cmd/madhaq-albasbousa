@@ -28,6 +28,8 @@ export interface Product {
   nameAr: string;
   nameEn: string;
   description: string;
+  /** Short tasting line under the name on cards, e.g. "قشطة غنية · لمسة لوز". */
+  notes?: string;
   category: CategoryId;
   image: Photo;
   unitType: UnitType;

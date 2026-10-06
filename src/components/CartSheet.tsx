@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { store } from '../config/store';
-import { formatPrice } from '../lib/catalog';
+import { formatPrice, wholeUnitLabel } from '../lib/catalog';
 import { MAX_QTY, type CartLine } from '../lib/cart';
 import { buildOrderMessage, isoDate, LIMITS, orderNumber, validateDetails, whatsappUrl, WHEN_OPTIONS, type DetailErrors } from '../lib/order';
 import type { CustomerDetails } from '../lib/types';
@@ -105,7 +105,7 @@ function CartStep({ lines, total, onQty, onRemove, onNext }: Props & { onNext: (
             <div className="line-info">
               <p className="line-name">{l.product.nameAr}</p>
               <p className="line-meta">
-                الحجم: {l.variant.nameAr} · {l.unit} كامل
+                الحجم: {l.variant.nameAr} · {wholeUnitLabel(l.product)}
               </p>
               <p className="line-calc">
                 {formatPrice(l.variant.price)} × {l.qty} {l.unit}

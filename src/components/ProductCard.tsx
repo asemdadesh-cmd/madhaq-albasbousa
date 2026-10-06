@@ -1,38 +1,39 @@
-import { formatPrice, startingPrice, wholeUnitLabel } from '../lib/catalog';
+import { startingPrice, wholeUnitLabel } from '../lib/catalog';
 import type { Product } from '../lib/types';
+import { store } from '../config/store';
+import { Icon } from './Icon';
 import { Img } from './Img';
 
 export function ProductCard({ product, onOpen }: { product: Product; onOpen: (id: string) => void }) {
-  const sizes = product.variants.map((v) => v.nameAr).join(' · ');
   return (
-    <article className="card">
-      <div className="card-media">
+    <article className="pcard" data-reveal>
+      <div className="pcard-media">
         <Img
           photo={product.image}
-          ratio={4 / 3}
-          widths={[400, 640, 900]}
-          sizes="(min-width: 1100px) 340px, (min-width: 700px) 45vw, 92vw"
+          ratio={1}
+          widths={[360, 560, 800]}
+          sizes="(min-width: 1100px) 260px, (min-width: 700px) 30vw, 46vw"
         />
-        <span className="unit-chip">{wholeUnitLabel(product)}</span>
-        {product.badge && <span className="badge">{product.badge}</span>}
+        <span className="pcard-unit">{wholeUnitLabel(product)}</span>
+        {product.badge && <span className="pcard-badge">{product.badge}</span>}
       </div>
-      <div className="card-body">
-        <h3 className="card-title">{product.nameAr}</h3>
-        <p className="card-sizes">{sizes}</p>
-        <div className="card-foot">
-          <p className="card-price">
-            <span>ابتداءً من</span>
-            <strong>{formatPrice(startingPrice(product))}</strong>
-          </p>
-          <button
-            type="button"
-            className="btn btn-primary btn-sm stretched"
-            onClick={() => onOpen(product.id)}
-            aria-label={`اختر حجم ${product.nameAr}`}
-          >
-            اختر الحجم
-          </button>
-        </div>
+      <div className="pcard-body">
+        {product.notes && <p className="pcard-notes">{product.notes}</p>}
+        <h3 className="pcard-name">{product.nameAr}</h3>
+        <p className="pcard-price">
+          <span>ابتداءً من</span>
+          <strong>{startingPrice(product)}</strong>
+          <span>{store.currency}</span>
+        </p>
+        <button
+          type="button"
+          className="pcard-btn stretched"
+          onClick={() => onOpen(product.id)}
+          aria-label={`اختار حجم ${product.nameAr}`}
+        >
+          <span>اختار الحجم</span>
+          <Icon name="plus" size={18} />
+        </button>
       </div>
     </article>
   );
