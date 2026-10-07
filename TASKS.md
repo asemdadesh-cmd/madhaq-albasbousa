@@ -1,6 +1,6 @@
 # TASKS.md — مذاق البسبوسة
 
-_Last updated: 2026-10-06_
+_Last updated: 2026-10-07_
 
 ## ✅ Done
 - [x] V1 storefront (whole trays/boxes/cakes, sizes, cart, WhatsApp order) — 17 tests, build passing
@@ -8,8 +8,10 @@ _Last updated: 2026-10-06_
 
 - [x] Premium redesign (design system, hero stamp + featured card, search, tasting notes)
 - [x] Scroll animations + "see it on the table" choosing moment, fly-to-basket, order-sent finale
+- [x] Vercel project linked; redesign deployed to production (`madhaq-albasbousa.vercel.app`)
 
 ## ⬜ Planned
+- [ ] Confirm the production URL is public (Vercel Authentication off) — open it in a private window
 - [ ] Matched photo set (brass trays on linen, one light/angle): needs figma.com allowed in the environment network, or the shop's own photos
 - [ ] Real menu: prices, sizes, serving counts in `src/config/menu.ts`
 - [ ] Shop's own photos in `public/images/`

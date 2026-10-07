@@ -1,6 +1,6 @@
 # PROJECT.md — مذاق البسبوسة
 
-_Last updated: 2026-10-06_
+_Last updated: 2026-10-07_
 
 ## Overview
 V1 demo storefront for **مذاق البسبوسة** (Tripoli, est. 2020, 0914153311). Sells whole trays (طاجين/صينية),
@@ -43,8 +43,10 @@ Vite 8 + React 19 + TypeScript, plain CSS tokens, self-hosted Amiri + IBM Plex S
 - `src/components/` — UI; `brand/` — logo sources
 
 ## Deployment
-Vercel project `madhaq-albasbousa`, linked to this repo; push to `main` → production. `vercel.json` holds CSP,
-security headers and asset caching. The build fails if `scripts/predeploy.mjs` finds broken references.
+Vercel project `madhaq-albasbousa` (team `asemdadesh-5431s-projects`), Git-linked to this repo: push to `main`
+→ production at **https://madhaq-albasbousa.vercel.app**; every other branch/PR gets a preview URL. No env vars,
+no build settings (Vite preset). `vercel.json` holds CSP, security headers and asset caching. The build fails if
+`scripts/predeploy.mjs` finds broken references.
 
 ## Known issues
 Demo prices/sizes/photos; delivery fee confirmed on WhatsApp (not computed); hours and pickup location are
@@ -54,6 +56,8 @@ the biggest remaining upgrade. This environment's network blocks downloading gen
 canva.com) until those hosts are allowed.
 
 ## Changelog
+- **2026-10-07** — Redesign + motion merged to `main` (PR #1) and deployed to production by Vercel
+  (deployment status: success).
 - **2026-10-06** — Motion + choosing experience: "see it on the table" tray drawing with plates per person,
   size moods, rolling price, card-to-sheet photo morph, fly-to-basket, haptics, sealed "صحتين مقدماً!"
   finale, scroll choreography (reveals, ribbon, parallax). Tests 18/18, e2e clean.
