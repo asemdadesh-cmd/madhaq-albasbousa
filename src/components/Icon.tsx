@@ -14,11 +14,23 @@ const PATHS = {
   tray: 'M3 15h18M4 15l1.5-6h13L20 15M2 18h20M8 12h.01M12 12h.01M16 12h.01',
   flame: 'M12 21a6 6 0 0 0 6-6c0-4-3-6-4-10-2 2-3 4-3 6-1-1-1.5-2-1.5-3C7 10 6 12.5 6 15a6 6 0 0 0 6 6Z',
   gift: 'M4 11h16v9H4zM3 7h18v4H3zM12 7v13M12 7c-1.5-3-5-3.5-5-1.5S10 7 12 7Zm0 0c1.5-3 5-3.5 5-1.5S14 7 12 7Z',
+  search: 'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm9 2-4.35-4.35',
+  cloche: 'M3 18h18M5 18a7 7 0 0 1 14 0M12 9V7m-1.5 0h3',
+  chat: 'M4 5h16v11H9l-5 4V5Zm4 4.5h8M8 12.5h5',
+  heart: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z',
+  pin: 'M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Zm0-9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z',
 } as const;
 
-export type IconName = keyof typeof PATHS | 'whatsapp';
+export type IconName = keyof typeof PATHS | 'whatsapp' | 'sparkle';
 
-export function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
+export function Icon({ name, size = 20, stroke = 1.6, draw }: { name: IconName; size?: number; stroke?: number; draw?: boolean }) {
+  if (name === 'sparkle') {
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path fill="currentColor" d="M12 2c.7 5.2 2.8 7.3 8 8-5.2.7-7.3 2.8-8 8-.7-5.2-2.8-7.3-8-8 5.2-.7 7.3-2.8 8-8Z" />
+      </svg>
+    );
+  }
   if (name === 'whatsapp') {
     return (
       <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -36,13 +48,14 @@ export function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={1.8}
+      strokeWidth={stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
       focusable="false"
+      className={draw ? 'draw' : undefined}
     >
-      <path d={PATHS[name]} />
+      <path d={PATHS[name]} pathLength={draw ? 1 : undefined} />
     </svg>
   );
 }

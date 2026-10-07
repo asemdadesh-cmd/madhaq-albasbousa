@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { store } from '../config/store';
-import { formatPrice } from '../lib/catalog';
+import { formatPrice, wholeUnitLabel } from '../lib/catalog';
 import { MAX_QTY, type CartLine } from '../lib/cart';
 import { buildOrderMessage, isoDate, LIMITS, orderNumber, validateDetails, whatsappUrl, WHEN_OPTIONS, type DetailErrors } from '../lib/order';
 import type { CustomerDetails } from '../lib/types';
@@ -105,7 +105,7 @@ function CartStep({ lines, total, onQty, onRemove, onNext }: Props & { onNext: (
             <div className="line-info">
               <p className="line-name">{l.product.nameAr}</p>
               <p className="line-meta">
-                الحجم: {l.variant.nameAr} · {l.unit} كامل
+                الحجم: {l.variant.nameAr} · {wholeUnitLabel(l.product)}
               </p>
               <p className="line-calc">
                 {formatPrice(l.variant.price)} × {l.qty} {l.unit}
@@ -360,15 +360,43 @@ function DetailsStep({
   );
 }
 
+const CONFETTI_COLOURS = ['#d9c39b', '#93a95b', '#7a3a1c', '#fbf7ef', '#1f3b2f', '#c99440'];
+
+/** A short, deterministic burst — no randomness, so it looks the same every time and never jitters. */
+function Confetti() {
+  return (
+    <div className="celebrate" aria-hidden="true">
+      {Array.from({ length: 28 }, (_, i) => {
+        const angle = (i / 28) * Math.PI * 2 + (i % 3) * 0.4;
+        const dist = 90 + ((i * 37) % 80);
+        const style = {
+          '--x': `${Math.cos(angle) * dist}px`,
+          '--y': `${Math.sin(angle) * dist * 0.75 - 70}px`,
+          '--r': `${((i * 53) % 360) - 180}deg`,
+          '--d': `${280 + (i % 7) * 35}ms`,
+          '--c': CONFETTI_COLOURS[i % CONFETTI_COLOURS.length],
+        } as React.CSSProperties;
+        return <i key={i} className={`confetti ${i % 3 === 0 ? 'round' : ''}`} style={style} />;
+      })}
+    </div>
+  );
+}
+
 function Sent({ orderNo, url, onDone }: { orderNo: string; url: string; onDone: () => void }) {
   return (
     <div className="empty sent" role="status">
-      <span className="empty-icon ok">
-        <Icon name="check" size={34} />
+      <Confetti />
+      <span className="seal-done" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="44" height="44">
+          <path d="M13 25.5l7.5 7.5L35 17" pathLength={1} />
+        </svg>
       </span>
-      <h2>طلبك جاهز في واتساب</h2>
+      <p className="kicker sent-kicker">
+        طلب رقم <span dir="ltr">{orderNo}</span>
+      </p>
+      <h2>صحتين مقدماً!</h2>
       <p>
-        رقم الطلب <strong dir="ltr">{orderNo}</strong>. اضغط <strong>إرسال</strong> في واتساب، ونأكد معاك الطلب والتوصيل في أقرب وقت.
+        طلبك جاهز في واتساب — اضغط <strong>إرسال</strong>، ونأكد معاك الطلب والتوصيل في أقرب وقت.
       </p>
       <a className="btn btn-whatsapp" href={url} target="_blank" rel="noopener noreferrer">
         <Icon name="whatsapp" /> ما انفتح واتساب؟ افتحه من هنا

@@ -1,36 +1,37 @@
 import { store } from '../config/store';
-import { Icon, type IconName } from './Icon';
+import { Icon } from './Icon';
 
-const STEPS: { icon: IconName; title: string; text: string }[] = [
-  { icon: 'tray', title: 'اختار الصنف', text: 'بسبوسة، كنافة، بقلاوة أو كيك.' },
-  { icon: 'users', title: 'اختار الحجم', text: 'صغير، وسط أو كبير — على قد لمّتك.' },
-  { icon: 'truck', title: 'وين نوصّل؟', text: 'الاسم، الرقم والعنوان — أو استلم من المحل.' },
-  { icon: 'whatsapp', title: 'أرسل على واتساب', text: 'رسالة الطلب جاهزة، بس اضغط إرسال.' },
+const STEPS = [
+  { n: '١', title: 'اختار الصنف', text: 'بسبوسة، كنافة، بقلاوة أو كيك.' },
+  { n: '٢', title: 'اختار الحجم', text: 'صغير، وسط أو كبير — على قدّ لمّتك.' },
+  { n: '٣', title: 'وين نوصّلوه؟', text: 'الاسم والرقم والعنوان، أو استلام من المحل.' },
+  { n: '٤', title: 'ابعثه على واتساب', text: 'رسالة الطلب جاهزة — بس اضغط إرسال.' },
 ];
 
 export function HowItWorks() {
   return (
     <section id="how" className="section how" aria-labelledby="how-title">
       <div className="container">
-        <div className="section-head">
-          <p className="eyebrow">أقل من دقيقة</p>
-          <h2 id="how-title">كيف تطلب؟</h2>
-        </div>
+        <header className="section-head" data-reveal>
+          <p className="kicker">
+            <Icon name="sparkle" size={12} /> أقل من دقيقة
+          </p>
+          <h2 id="how-title" className="display-2">
+            أربع خطوات، <em>والحلو عندك.</em>
+          </h2>
+        </header>
         <ol className="how-steps">
-          {STEPS.map((s, i) => (
-            <li key={s.title}>
+          {STEPS.map((s) => (
+            <li key={s.n} data-reveal>
               <span className="how-num" aria-hidden="true">
-                {i + 1}
-              </span>
-              <span className="how-icon">
-                <Icon name={s.icon} size={24} />
+                {s.n}
               </span>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
             </li>
           ))}
         </ol>
-        <ul className="facts">
+        <ul className="facts" data-reveal>
           <li>
             <Icon name="clock" size={18} /> {store.hours}
           </li>

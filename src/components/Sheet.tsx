@@ -1,4 +1,6 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useRef, type ReactNode } from 'react';
+
+const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 import { Icon } from './Icon';
 
 interface Props {
@@ -14,7 +16,7 @@ interface Props {
 export function Sheet({ open, onClose, label, children, footer, wide }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
 
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     const d = ref.current;
     if (!d) return;
     if (open && !d.open) {

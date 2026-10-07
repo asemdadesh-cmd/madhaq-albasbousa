@@ -1,19 +1,22 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
+import { Ribbon } from './components/Ribbon';
+import { reducedMotion } from './lib/motion';
 import { CartBar } from './components/CartBar';
 import { CartSheet } from './components/CartSheet';
 import { Footer } from './components/Footer';
-import { Header } from './components/Header';
-import { Hero } from './components/Hero';
+import { Announcement, Header } from './components/Header';
+import { Hero, ValueProps } from './components/Hero';
 import { HowItWorks } from './components/HowItWorks';
 import { Menu } from './components/Menu';
 import { Occasions } from './components/Occasions';
 import { ProductSheet } from './components/ProductSheet';
 import { Toast } from './components/Toast';
-import { store } from './config/store';
 import { getProduct, getVariant, unitLabel } from './lib/catalog';
 import { cartCount, cartLines, cartReducer, cartTotal } from './lib/cart';
 import { emptyDetails } from './lib/order';
 import { KEYS, load, save } from './lib/storage';
+import { useReveal } from './lib/reveal';
 import type { CartItem, CustomerDetails } from './lib/types';
 
 type View = { kind: 'product'; id: string } | { kind: 'cart' } | null;
@@ -33,6 +36,8 @@ export function App() {
   // True when the open sheet added its own history entry, so closing it can just go "back".
   const pushed = useRef(false);
   const viewRef = useRef<View>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+  useReveal();
   viewRef.current = view;
 
   // Client-only start-up: restore cart + contact details, honour product deep links, wire the back button.
@@ -102,7 +107,17 @@ export function App() {
   const total = cartTotal(lines);
   const count = cartCount(items);
   const openCart = () => open({ kind: 'cart' });
-  const openProduct = (id: string) => open({ kind: 'product', id });
+  const openProduct = (id: string, from?: HTMLElement | null) => {
+    const go = () => open({ kind: 'product', id });
+    // Shared-element morph: the card photo grows into the sheet's photo (browsers with View Transitions).
+    const doc = document as Document & { startViewTransition?: (cb: () => void) => unknown };
+    if (!from || !doc.startViewTransition || reducedMotion()) return go();
+    from.style.viewTransitionName = 'product-photo';
+    doc.startViewTransition(() => {
+      from.style.viewTransitionName = '';
+      flushSync(go);
+    });
+  };
 
   const product = view?.kind === 'product' ? getProduct(view.id) : undefined;
 
@@ -111,11 +126,20 @@ export function App() {
       <a href="#menu" className="skip-link">
         تخطّى إلى المنيو
       </a>
-      {store.demoMode && <p className="demo-bar">نسخة تجريبية — الأسعار والصور للعرض فقط</p>}
-      <Header count={count} onCart={openCart} />
+      <Announcement />
+      <Header
+        count={count}
+        onCart={openCart}
+        onSearch={() => {
+          document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' });
+          setTimeout(() => searchRef.current?.focus({ preventScroll: true }), 350);
+        }}
+      />
       <main id="top">
-        <Hero />
-        <Menu onOpen={openProduct} />
+        <Hero onOpen={openProduct} />
+        <ValueProps />
+        <Ribbon />
+        <Menu ref={searchRef} onOpen={openProduct} />
         <Occasions onPick={openProduct} />
         <HowItWorks />
       </main>

@@ -12,7 +12,11 @@ export const getVariant = (product: Product, variantId: string): Variant | undef
 export const unitLabel = (product: Product): string => product.unitLabel ?? UNIT_LABELS[product.unitType];
 
 /** "طاجين كامل" / "بوكس كامل" / "قالب كامل" — tells the customer they buy the whole thing. */
-export const wholeUnitLabel = (product: Product): string => `${unitLabel(product)} كامل`;
+export const wholeUnitLabel = (product: Product): string => {
+  const unit = unitLabel(product);
+  // Feminine units (صينية) take كاملة; طاجين / بوكس / قالب take كامل.
+  return `${unit} ${unit.endsWith('ة') ? 'كاملة' : 'كامل'}`;
+};
 
 export const startingPrice = (product: Product): number => Math.min(...product.variants.map((v) => v.price));
 
@@ -48,3 +52,30 @@ export function suggestTrays(people: number): { size: 'small' | 'medium' | 'larg
   if (last !== 'large') out.push({ size: last, count: 1 });
   return out;
 }
+
+/** Arabic-insensitive search key: drops tashkeel/tatweel and folds common letter variants. */
+export const searchKey = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[ً-ٰٟـ]/g, '')
+    .replace(/[أإآٱ]/g, 'ا')
+    .replace(/ة/g, 'ه')
+    .replace(/ى/g, 'ي')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+export function searchProducts(products: Product[], query: string): Product[] {
+  const q = searchKey(query);
+  if (!q) return products;
+  return products.filter((p) =>
+    searchKey(`${p.nameAr} ${p.nameEn} ${p.notes ?? ''} ${p.description} ${unitLabel(p)}`).includes(q),
+  );
+}
+
+/** Upper head-count of a size, read from its serves text ("يكفي تقريباً 7–10 أشخاص" → 10). */
+export function servesUpTo(variant: Variant): number {
+  const nums = (normalizeArabicDigits(variant.serves).match(/\d+/g) ?? []).map(Number);
+  return nums.length ? Math.max(...nums) : 0;
+}
+
+const normalizeArabicDigits = (s: string) => s.replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660));

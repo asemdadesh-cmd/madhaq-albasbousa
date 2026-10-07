@@ -21,6 +21,8 @@ export interface Variant {
   dimensions?: string;
   /** Optional photo for this size only. */
   image?: Photo;
+  /** Who this size is for, shown while choosing, e.g. "لما يجوا الضيوف". */
+  mood?: string;
 }
 
 export interface Product {
@@ -28,6 +30,8 @@ export interface Product {
   nameAr: string;
   nameEn: string;
   description: string;
+  /** Short tasting line under the name on cards, e.g. "قشطة غنية · لمسة لوز". */
+  notes?: string;
   category: CategoryId;
   image: Photo;
   unitType: UnitType;
@@ -38,6 +42,8 @@ export interface Product {
   defaultVariantId?: string;
   /** Small ribbon on the card, e.g. "الأكثر طلباً". */
   badge?: string;
+  /** Colour of the tray in the "see it on the table" drawing. */
+  tint?: string;
 }
 
 export interface Category {
